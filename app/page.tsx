@@ -1,19 +1,13 @@
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
-import Searchbar from "@/components/Searchbar";
+import SearchForm from "@/components/SearchForm/SearchForm";
 
 export default function Home() {
   return (
     <>
-      <header>
-        <Navbar />
-      </header>
       <main>
         <div className="container">
-          <Searchbar />
+          <SearchForm variant={"home"} />
         </div>
       </main>
-      <Footer />
     </>
   );
 }

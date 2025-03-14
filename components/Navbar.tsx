@@ -9,7 +9,7 @@ const Navbar = () => {
           <Link href="/">JobRader</Link>
         </h2>
         <div className="flex gap-4 items-center">
-          <Link href="/" className="cursor-pointer">
+          <Link href="/jobs" className="cursor-pointer">
             Find Jobs
           </Link>
           <Link href="/" className="cursor-pointer">

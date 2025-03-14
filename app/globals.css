@@ -71,4 +71,8 @@
       @apply font-medium outline-none;
     }
   }
+
+  #search-jobs {
+    @apply border;
+  }
 }
