@@ -1,13 +1,74 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary: #5d7eac;
+  --color-secondary: #9490ea;
+  --color-accent: #9889b8;
+  --color-bg: #eef4fc;
+  --color-text: #030911;
 }
 
-html,
-body {
-  height: 100%;
+@layer components {
+  .btn {
+    @apply rounded-sm px-8 py-3;
+  }
+
+  .btn-primary {
+    @apply text-white bg-primary;
+  }
 }
 
-body {
-  @apply flex flex-col justify-between;
+@utility container {
+  @apply max-w-7xl w-full h-full py-24 px-4 m-auto;
+}
+
+@utility row {
+  @apply flex;
+}
+
+@utility col {
+  @apply flex flex-col justify-center grow relative;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply flex flex-col justify-between;
+    color: var(--color-text);
+    background-color: var(--color-bg);
+  }
+
+  main {
+    flex-grow: 1;
+  }
+
+  input {
+    @apply w-full;
+
+    &::placeholder {
+      @apply text-xs;
+    }
+  }
+
+  #search-main {
+    .row {
+      @apply mt-8 py-3 px-3 rounded-sm outline-2 outline-primary;
+    }
+
+    p {
+      @apply w-40;
+    }
+
+    label {
+      @apply font-bold cursor-pointer absolute -top-12;
+    }
+
+    input {
+      @apply font-medium outline-none;
+    }
+  }
 }

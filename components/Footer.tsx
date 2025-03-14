@@ -2,8 +2,8 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <div className="flex border">
-      <h2 className="font-bold grow">JobRader</h2>
+    <div className="flex p-4 border-t">
+      <h2 className="text-primary font-bold grow">JobRader</h2>
       <div className="flex gap-2 grow">
         <p>© 2025 JR Inc</p>
         <p>Privacy</p>

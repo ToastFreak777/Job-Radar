@@ -9,9 +9,11 @@ export default function Home() {
         <Navbar />
       </header>
       <main>
-        <Searchbar />
+        <div className="container">
+          <Searchbar />
+        </div>
       </main>
       <Footer />
     </>
   );
-
+}
