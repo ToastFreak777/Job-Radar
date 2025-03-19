@@ -19,14 +19,50 @@ const Jobs = async ({ searchParams }: SearchParamsProps) => {
 
   return (
     // <div className="flex max-w-[1200px] m-auto border-4">
-    <div className="flex border-4">
-      <div className="">
+    <div className="wrapper row gap-12">
+      <div className="grow-1">
         <SearchForm variant={"jobs"} />
       </div>
-      <div className="grow-6">
+      <div className="grow-2 max-w-[80%]">
+        <div className="flex justify-between">
+          <h3>{job} jobs in the USA</h3>
+          <p>{data?.count} jobs</p>
+        </div>
         {data?.results?.map((item) => (
-          <div key={item.id}>
-            <p>{item.company.display_name}</p>
+          <div className="border-y border-gray-300" key={item.id}>
+            <h4 className="text-lg font-semibold">{item.title}</h4>
+            <p className="text-sm text-gray-500">
+              {item.company.display_name} | {item.location.display_name}
+            </p>
+            {item.salary_max === item.salary_min ? (
+              <p className="font-semibold">
+                {item.salary_max.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
+            ) : (
+              <p className="font-semibold">
+                {item.salary_min.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}{" "}
+                -{" "}
+                {item.salary_max.toLocaleString("en-US", {
+                  style: "currency",
+                  currency: "USD",
+                })}
+              </p>
+            )}
+            <p className="text-sm">{item.description}</p>
+            <a
+              href={item.redirect_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 hover:underline"
+            >
+              View Job
+            </a>
           </div>
         ))}
       </div>

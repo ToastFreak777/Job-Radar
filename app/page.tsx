@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="container">
+        <div className="wrapper">
           <SearchForm variant={"home"} />
         </div>
       </main>

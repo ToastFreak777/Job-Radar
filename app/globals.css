@@ -16,9 +16,19 @@
   .btn-primary {
     @apply text-white bg-primary;
   }
+
+  .dropdown {
+    summary {
+      @apply cursor-pointer;
+    }
+
+    option {
+      @apply px-6 hover:bg-gray-300 rounded-sm cursor-pointer;
+    }
+  }
 }
 
-@utility container {
+@utility wrapper {
   @apply max-w-7xl w-full h-full py-24 px-4 m-auto;
 }
 
@@ -46,8 +56,12 @@
     flex-grow: 1;
   }
 
+  label {
+    @apply font-bold cursor-pointer;
+  }
+
   input {
-    @apply w-full;
+    @apply w-full font-medium outline-none;
 
     &::placeholder {
       @apply text-xs;
@@ -64,15 +78,10 @@
     }
 
     label {
-      @apply font-bold cursor-pointer absolute -top-12;
-    }
-
-    input {
-      @apply font-medium outline-none;
+      @apply absolute -top-12;
     }
   }
 
   #search-jobs {
-    @apply border;
   }
 }

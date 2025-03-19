@@ -55,7 +55,6 @@ export type AdzunaJobs = {
   adref: string;
   category: AdzunaCategory;
   company: AdzunaCompany;
-  contract_time: string;
   created: Date;
   description: string;
   id: string;

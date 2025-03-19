@@ -13,6 +13,7 @@ export const adzuna = {
   }): Promise<AdzuanaResponse> => {
     const country = "us";
     const page = 1;
+    const max_days_old = "30";
     // console.log(query);
 
     const url = new URL(`${country}/search/${page}`, BASE_URL);
@@ -23,6 +24,7 @@ export const adzuna = {
 
       url.searchParams.append("app_id", API_ID);
       url.searchParams.append("app_key", API_KEY);
+      url.searchParams.append("max_days_old", max_days_old);
 
       Object.keys(query).forEach((key) => {
         if (query[key] !== "") url.searchParams.append(key, query[key]);
