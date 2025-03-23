@@ -61,7 +61,7 @@
   }
 
   input {
-    @apply w-full font-medium outline-none;
+    @apply w-full font-medium;
 
     &::placeholder {
       @apply text-xs;
@@ -80,8 +80,9 @@
     label {
       @apply absolute -top-12;
     }
-  }
 
-  #search-jobs {
+    input {
+      @apply outline-none;
+    }
   }
 }

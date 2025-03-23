@@ -1,22 +1,30 @@
+import { AdzunaAPIQuery } from "@/@types/adzuna";
 import SearchForm from "@/components/SearchForm/SearchForm";
 import { adzuna } from "@/utils/adzunaAPI";
 import React from "react";
 
-type SearchParamsProps = {
-  searchParams: {
-    job?: string;
-    location?: string;
-  };
+const loadAdzunaJobs = async (query: AdzunaAPIQuery) => {
+  const data = await adzuna.getJobs(query);
+  return data;
 };
 
-const Jobs = async ({ searchParams }: SearchParamsProps) => {
-  const { job = "", location = "" } = await searchParams;
+const Jobs = async ({
+  searchParams,
+}: {
+  searchParams: Promise<AdzunaAPIQuery>;
+}) => {
+  const query = await searchParams;
+  const { what, where } = query;
 
-  const data = await adzuna.getJobs({
-    what: job,
-    where: location,
-  });
-  // console.log(data);
+  const data = await loadAdzunaJobs(query);
+  // const data = await adzuna.getJobs({
+  //   what,
+  //   where,
+  //   distance,
+  //   page,
+  //   max_days_old,
+  // });
+  console.log(data);
 
   return (
     <div className="wrapper row gap-12">
@@ -26,8 +34,8 @@ const Jobs = async ({ searchParams }: SearchParamsProps) => {
       <div className="grow-2 max-w-[80%]">
         <div className="flex justify-between">
           <h3>
-            <span className="font-semibold">{job}</span> jobs in the USA,{" "}
-            {location}
+            <span className="font-semibold">{what}</span> jobs in the USA,{" "}
+            {where}
           </h3>
           <p>{data?.count} jobs</p>
         </div>

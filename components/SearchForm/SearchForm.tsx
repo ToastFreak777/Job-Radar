@@ -4,29 +4,47 @@ import React, { useState } from "react";
 
 import WorkIcon from "@mui/icons-material/Work";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type SearchFormProps = {
   variant: string;
 };
 
 const initialState: {
-  job: string;
-  location: string;
+  what: string;
+  where: string;
   contract_type: string;
   working_hours: string;
   recent_searches: string[];
+  page: number;
+  results_per_page: number;
+  distance: number;
+  max_days_old: number;
+  min: number;
+  max: number;
 } = {
-  job: "",
-  location: "",
+  what: "",
+  where: "",
   contract_type: "permanent",
   working_hours: "full_time",
   recent_searches: [],
+  page: 1,
+  results_per_page: 10,
+  distance: 5,
+  max_days_old: 30,
+  min: 0,
+  max: 0,
 };
 
 const SearchForm = ({ variant }: SearchFormProps) => {
-  const [formData, setFormData] = useState(initialState);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [formData, setFormData] = useState({
+    ...initialState,
+    what: searchParams.get("what") || "",
+    where: searchParams.get("where") || "",
+  });
 
   // TODO complete filters
   // - Add page / pagination
@@ -44,10 +62,19 @@ const SearchForm = ({ variant }: SearchFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const { job, location, contract_type, working_hours } = formData;
+    const {
+      what,
+      where,
+      contract_type,
+      working_hours,
+      page,
+      distance,
+      min: salary_min,
+      max: salary_max,
+    } = formData;
 
-    if (job || location) {
-      const searchHistory = `${job || ""}${location ? " in " + location : ""}`;
+    if (what || where) {
+      const searchHistory = `${what || ""}${where ? " in " + location : ""}`;
 
       setFormData({
         ...formData,
@@ -56,10 +83,14 @@ const SearchForm = ({ variant }: SearchFormProps) => {
     }
 
     const searchParams = new URLSearchParams({
-      job,
-      location,
+      what,
+      where,
       [contract_type]: "1",
       [working_hours]: "1",
+      page,
+      distance,
+      salary_min,
+      salary_max,
     }).toString();
     router.push(`/jobs?${searchParams}`);
   };
@@ -75,16 +106,17 @@ const SearchForm = ({ variant }: SearchFormProps) => {
       >
         <div className="row flex-col gap-2">
           <div>
-            <label htmlFor="job">
+            <label htmlFor="what">
               <WorkIcon /> What
             </label>
             <div className="flex my-2 p-2 rounded-sm outline-2 outline-primary">
               <input
-                id="job"
-                name="job"
-                value={formData.job}
+                className="outline-none"
+                id="what"
+                name="what"
+                value={formData.what}
                 onChange={handleChange}
-                placeholder="job title, keywords or company"
+                placeholder="what title, keywords or company"
               />
               <button type="submit" hidden>
                 Submit
@@ -92,14 +124,15 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             </div>
           </div>
           <div>
-            <label htmlFor="location">
+            <label htmlFor="where">
               <LocationOnIcon /> Where
             </label>
             <div className="my-2 p-2 rounded-sm outline-2 outline-primary">
               <input
-                id="location"
-                name="location"
-                value={formData.location}
+                className="outline-none"
+                id="where"
+                name="where"
+                value={formData.where}
                 onChange={handleChange}
                 placeholder="city, state, postal codes"
               />
@@ -121,12 +154,40 @@ const SearchForm = ({ variant }: SearchFormProps) => {
               <option value={"contract"}>Contract</option>
             </select>
           </div>
-          {/*
-          *
           <div>
-            <input type="range" min="1" max="100" name="distance" id="slider" />
+            <label>Distance</label>
+            <input
+              className="w-[25%] outline-2 outline-primary rounded-sm ml-2 pl-2"
+              type="text"
+              name="distance"
+              inputMode="numeric"
+              pattern="[0-9]+"
+              value={formData.distance}
+              onChange={handleChange}
+            />
           </div>
-          */}
+          <div className="flex items-center gap-2">
+            <label className="block text-sm">Min</label>
+            <input
+              className="outline-2 outline-primary rounded-sm pl-2"
+              type="text"
+              name="min"
+              inputMode="numeric"
+              pattern="[0-9]+"
+              value={formData.min}
+              onChange={handleChange}
+            />
+            <label className="block text-sm">Max</label>
+            <input
+              className="outline-2 outline-primary rounded-sm pl-2"
+              type="text"
+              name="max"
+              inputMode="numeric"
+              pattern="[0-9]+"
+              value={formData.max}
+              onChange={handleChange}
+            />
+          </div>
           <div>
             <label className="block" htmlFor="working_hours">
               Working Hours
@@ -149,16 +210,16 @@ const SearchForm = ({ variant }: SearchFormProps) => {
                 <option
                   key={index}
                   onClick={() => {
-                    const [job, location] = search.split(" in ");
+                    const [what, where] = search.split(" in ");
 
                     const searchParams = new URLSearchParams({
-                      job,
-                      location,
+                      what,
+                      where,
                     }).toString();
                     setFormData({
                       ...formData,
-                      job,
-                      location,
+                      what,
+                      where,
                     });
                     router.push(`/jobs?${searchParams}`);
                   }}
@@ -184,33 +245,37 @@ const SearchForm = ({ variant }: SearchFormProps) => {
     <form id="search-main" role="search" action={"/jobs"} autoComplete="off">
       <div className="row">
         <div className="col">
-          <label htmlFor="job">
+          <label htmlFor="what">
             <WorkIcon /> What
           </label>
           <div className="border-r-2 border-gray-300 mr-3">
             <input
-              id="job"
-              name="job"
-              placeholder="job title, keywords or company"
-              value={formData.job}
+              id="what"
+              name="what"
+              placeholder="what title, keywords or company"
+              value={formData.what}
               onChange={handleChange}
             />
           </div>
         </div>
         <div className="col">
-          <label htmlFor="location">
+          <label htmlFor="where">
             <LocationOnIcon /> Where
           </label>
           <div className="">
             <input
-              id="location"
-              name="location"
+              id="where"
+              name="where"
               placeholder="city, state, postal codes"
-              value={formData.location}
+              value={formData.where}
               onChange={handleChange}
             />
           </div>
         </div>
+        <input name="distance" defaultValue="5" hidden />
+        <input name="page" defaultValue="1" hidden />
+        <input name="max_days_old" defaultValue="30" hidden />
+        <input name="country" defaultValue="us" hidden />
 
         <p className="col grow-0">
           <button className="btn btn-primary">Search</button>
