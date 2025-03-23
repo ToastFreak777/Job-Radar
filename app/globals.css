@@ -18,9 +18,7 @@
   }
 
   .dropdown {
-    summary {
-      @apply cursor-pointer;
-    }
+    @apply cursor-pointer;
 
     option {
       @apply px-6 hover:bg-gray-300 rounded-sm cursor-pointer;

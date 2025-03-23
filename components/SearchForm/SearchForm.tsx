@@ -99,7 +99,7 @@ const SearchForm = ({ variant }: SearchFormProps) => {
         onSubmit={handleSubmit}
         autoComplete="off"
       >
-        <div className="row flex-col gap-2">
+        <div className="row flex-col gap-4">
           <div>
             <label htmlFor="what">
               <WorkIcon /> What
@@ -139,7 +139,7 @@ const SearchForm = ({ variant }: SearchFormProps) => {
           <div>
             <label>Distance</label>
             <input
-              className="w-[25%] outline-2 outline-primary rounded-sm ml-2 pl-2"
+              className="w-[25%] outline-2 outline-primary rounded-sm ml-4 pl-2"
               type="text"
               name="distance"
               inputMode="numeric"
@@ -148,27 +148,32 @@ const SearchForm = ({ variant }: SearchFormProps) => {
               onChange={handleChange}
             />
           </div>
-          <div className="flex items-center gap-2">
-            <label className="block text-sm">Min</label>
-            <input
-              className="outline-2 outline-primary rounded-sm pl-2"
-              type="text"
-              name="salary_min"
-              inputMode="numeric"
-              pattern="[0-9]+"
-              value={formData.salary_min}
-              onChange={handleChange}
-            />
-            <label className="block text-sm">Max</label>
-            <input
-              className="outline-2 outline-primary rounded-sm pl-2"
-              type="text"
-              name="salary_max"
-              inputMode="numeric"
-              pattern="[0-9]+"
-              value={formData.salary_max}
-              onChange={handleChange}
-            />
+          <div className="">
+            <div className="flex items-center gap-6">
+              <label className="text-sm w-full">Min</label>
+              <label className="text-sm w-full">Max</label>
+            </div>
+            <div className="flex gap-2">
+              <input
+                className="outline-2 outline-primary rounded-sm pl-2"
+                type="text"
+                name="salary_min"
+                inputMode="numeric"
+                pattern="[0-9]+"
+                value={formData.salary_min}
+                onChange={handleChange}
+              />
+              {` - `}
+              <input
+                className="outline-2 outline-primary rounded-sm pl-2"
+                type="text"
+                name="salary_max"
+                inputMode="numeric"
+                pattern="[0-9]+"
+                value={formData.salary_max}
+                onChange={handleChange}
+              />
+            </div>
           </div>
           <div>
             <label className="block" htmlFor="age">
@@ -215,7 +220,7 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             </select>
           </div>
         </div>
-        <div>
+        <div className="my-2">
           <div>
             <details className="dropdown">
               <summary>Recent Searches</summary>
