@@ -20,8 +20,8 @@ const initialState: {
   results_per_page: number;
   distance: number;
   max_days_old: number;
-  min: number;
-  max: number;
+  salary_min: number;
+  salary_max: number;
 } = {
   what: "",
   where: "",
@@ -31,9 +31,9 @@ const initialState: {
   page: 1,
   results_per_page: 10,
   distance: 5,
-  max_days_old: 30,
-  min: 0,
-  max: 1_000_000,
+  max_days_old: 7,
+  salary_min: 0,
+  salary_max: 1_000_000,
 };
 
 const SearchForm = ({ variant }: SearchFormProps) => {
@@ -46,9 +46,12 @@ const SearchForm = ({ variant }: SearchFormProps) => {
     where: searchParams.get("where") || "",
   });
 
-  // TODO complete filters
+  // TODO
   // - Add pagination
-  // - Add max_days_old (default 7 days)
+  // - Add conditional Rendering for recent searches
+  // - Style it up baby
+  // - Add the second external api (stretch)
+  // - Fix some of the TS type errors
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -64,14 +67,12 @@ const SearchForm = ({ variant }: SearchFormProps) => {
       where,
       contract_type,
       working_hours,
-      page,
-      distance,
-      min: salary_min,
-      max: salary_max,
+      recent_searches,
+      ...data
     } = formData;
 
     if (what || where) {
-      const searchHistory = `${what || ""}${where ? " in " + location : ""}`;
+      const searchHistory = `${what || ""}${where ? " in " + where : ""}`;
 
       setFormData({
         ...formData,
@@ -82,12 +83,9 @@ const SearchForm = ({ variant }: SearchFormProps) => {
     const searchParams = new URLSearchParams({
       what,
       where,
+      ...data,
       [contract_type]: "1",
       [working_hours]: "1",
-      page,
-      distance,
-      salary_min,
-      salary_max,
     }).toString();
     router.push(`/jobs?${searchParams}`);
   };
@@ -155,20 +153,20 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             <input
               className="outline-2 outline-primary rounded-sm pl-2"
               type="text"
-              name="min"
+              name="salary_min"
               inputMode="numeric"
               pattern="[0-9]+"
-              value={formData.min}
+              value={formData.salary_min}
               onChange={handleChange}
             />
             <label className="block text-sm">Max</label>
             <input
               className="outline-2 outline-primary rounded-sm pl-2"
               type="text"
-              name="max"
+              name="salary_max"
               inputMode="numeric"
               pattern="[0-9]+"
-              value={formData.max}
+              value={formData.salary_max}
               onChange={handleChange}
             />
           </div>
