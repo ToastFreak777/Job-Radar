@@ -272,10 +272,6 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             />
           </div>
         </div>
-        <input name="distance" defaultValue="5" hidden />
-        <input name="page" defaultValue="1" hidden />
-        <input name="max_days_old" defaultValue="30" hidden />
-        <input name="country" defaultValue="us" hidden />
 
         <p className="col grow-0">
           <button className="btn btn-primary">Search</button>

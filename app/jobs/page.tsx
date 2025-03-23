@@ -1,12 +1,7 @@
 import { AdzunaAPIQuery } from "@/@types/adzuna";
 import SearchForm from "@/components/SearchForm/SearchForm";
-import { adzuna } from "@/utils/adzunaAPI";
+import { loadAdzunaJobs } from "@/utils/helpers";
 import React from "react";
-
-const loadAdzunaJobs = async (query: AdzunaAPIQuery) => {
-  const data = await adzuna.getJobs(query);
-  return data;
-};
 
 const Jobs = async ({
   searchParams,
@@ -17,13 +12,6 @@ const Jobs = async ({
   const { what, where } = query;
 
   const data = await loadAdzunaJobs(query);
-  // const data = await adzuna.getJobs({
-  //   what,
-  //   where,
-  //   distance,
-  //   page,
-  //   max_days_old,
-  // });
   console.log(data);
 
   return (

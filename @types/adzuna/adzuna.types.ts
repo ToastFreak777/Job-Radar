@@ -1,15 +1,20 @@
-export type AdzunaAPIQuery = {
+export interface AdzunaAPIBASE {
   country: string;
   app_id: string;
   app_key: string;
   page: number;
-  results_per_page?: number;
+}
+
+export interface JobSearchParams {
   what?: string;
   what_and?: string;
   what_phrase?: string;
   what_or?: string;
   what_exclude?: string;
   title_only?: string;
+}
+
+export interface LocationParams {
   where?: string;
   distance?: number;
   location0?: string;
@@ -20,19 +25,36 @@ export type AdzunaAPIQuery = {
   location5?: string;
   location6?: string;
   location7?: string;
-  max_days_old?: number;
-  category?: string;
-  sort_dir?: string;
-  sory_by?: string;
+}
+
+export interface SalaryParams {
   salary_min?: number;
   salary_max?: number;
   salary_include_unknown?: string;
+}
+
+export interface FilterParams {
+  results_per_page?: number;
+  max_days_old?: number;
+  category?: string;
+  sort_dir?: string;
+  sort_by?: string;
   full_time?: string;
   part_time?: string;
   contract?: string;
   permanent?: string;
   company?: string;
-};
+}
+
+export interface AdzunaAPIQuery
+  extends Partial<JobSearchParams>,
+    Partial<LocationParams>,
+    Partial<SalaryParams>,
+    Partial<FilterParams> {}
+
+export interface AdzunaAPIRequest
+  extends AdzunaAPIBASE,
+    Partial<AdzunaAPIQuery> {}
 
 export type AdzunaCategory = {
   label: string;

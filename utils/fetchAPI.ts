@@ -11,7 +11,7 @@ interface FetchAPIOptions {
 type Options = Record<string, never> | FetchAPIOptions;
 
 export async function fetchAPI(url: string, options: Options) {
-  console.log(url, options);
+  // console.log(url, options);
 
   try {
     const response = await fetch(url, options);
