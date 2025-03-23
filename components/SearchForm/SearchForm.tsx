@@ -33,7 +33,7 @@ const initialState: {
   distance: 5,
   max_days_old: 30,
   min: 0,
-  max: 0,
+  max: 1_000_000,
 };
 
 const SearchForm = ({ variant }: SearchFormProps) => {
@@ -47,11 +47,8 @@ const SearchForm = ({ variant }: SearchFormProps) => {
   });
 
   // TODO complete filters
-  // - Add page / pagination
-  // - Add results_per_page
-  // - Add distance  (default 5km)
+  // - Add pagination
   // - Add max_days_old (default 7 days)
-  // - Add min and max salary
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -142,19 +139,6 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             </div>
           </div>
           <div>
-            <label className="block">Contract Type</label>
-            <select
-              id="contract_type"
-              name="contract_type"
-              className="dropdown"
-              onChange={handleChange}
-              value={formData.contract_type}
-            >
-              <option value={"permanent"}>Permanent</option>
-              <option value={"contract"}>Contract</option>
-            </select>
-          </div>
-          <div>
             <label>Distance</label>
             <input
               className="w-[25%] outline-2 outline-primary rounded-sm ml-2 pl-2"
@@ -189,6 +173,22 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             />
           </div>
           <div>
+            <label className="block" htmlFor="age">
+              Date Posted
+            </label>
+            <select
+              id="age"
+              name="max_days_old"
+              className="dropdown"
+              onChange={handleChange}
+              value={formData.max_days_old}
+            >
+              <option value={1}>Today</option>
+              <option value={7}>This Week</option>
+              <option value={30}>This Month</option>
+            </select>
+          </div>
+          <div>
             <label className="block" htmlFor="working_hours">
               Working Hours
             </label>
@@ -203,6 +203,21 @@ const SearchForm = ({ variant }: SearchFormProps) => {
               <option value={"part_time"}>Part-time</option>
             </select>
           </div>
+          <div>
+            <label className="block">Contract Type</label>
+            <select
+              id="contract_type"
+              name="contract_type"
+              className="dropdown"
+              onChange={handleChange}
+              value={formData.contract_type}
+            >
+              <option value={"permanent"}>Permanent</option>
+              <option value={"contract"}>Contract</option>
+            </select>
+          </div>
+        </div>
+        <div>
           <div>
             <details className="dropdown">
               <summary>Recent Searches</summary>

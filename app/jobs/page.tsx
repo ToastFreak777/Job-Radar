@@ -10,6 +10,7 @@ const Jobs = async ({
 }) => {
   const query = await searchParams;
   const { what, where } = query;
+  console.log(query);
 
   const data = await loadAdzunaJobs(query);
   console.log(data);
