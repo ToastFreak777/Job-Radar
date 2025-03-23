@@ -14,7 +14,6 @@ export const adzuna = {
     const country = "us";
     const page = 1;
     const max_days_old = "30";
-    // console.log(query);
 
     const url = new URL(`${country}/search/${page}`, BASE_URL);
 
