@@ -4,25 +4,29 @@ import React, { useState } from "react";
 
 import WorkIcon from "@mui/icons-material/Work";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { AdzunaAPIQuery } from "@/@types/adzuna";
 
 type SearchFormProps = {
   variant: string;
+  initialQuery?: AdzunaAPIQuery;
 };
 
-const initialState: {
+type InitialState = {
   what: string;
   where: string;
-  contract_type: string;
-  working_hours: string;
+  contract_type: "permanent" | "contract";
+  working_hours: "full_time" | "part_time";
   recent_searches: string[];
   page: number;
   results_per_page: number;
   distance: number;
-  max_days_old: number;
+  max_days_old: 1 | 7 | 30;
   salary_min: number;
   salary_max: number;
-} = {
+};
+
+const initialState: InitialState = {
   what: "",
   where: "",
   contract_type: "permanent",
@@ -36,22 +40,16 @@ const initialState: {
   salary_max: 1_000_000,
 };
 
-const SearchForm = ({ variant }: SearchFormProps) => {
+const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [formData, setFormData] = useState({
     ...initialState,
-    what: searchParams.get("what") || "",
-    where: searchParams.get("where") || "",
+    ...initialQuery,
   });
 
   // TODO
-  // - Add pagination
-  // - Add conditional Rendering for recent searches
-  // - Style it up baby
   // - Add the second external api (stretch)
-  // - Fix some of the TS type errors
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -62,17 +60,12 @@ const SearchForm = ({ variant }: SearchFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    const {
-      what,
-      where,
-      contract_type,
-      working_hours,
-      recent_searches,
-      ...data
-    } = formData;
 
-    if (what || where) {
-      const searchHistory = `${what || ""}${where ? " in " + where : ""}`;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { contract_type, working_hours, recent_searches, ...rest } = formData;
+
+    if (rest.what || rest.where) {
+      const searchHistory = `${rest.what || ""}${rest.where ? " in " + rest.where : ""}`;
 
       setFormData({
         ...formData,
@@ -80,13 +73,18 @@ const SearchForm = ({ variant }: SearchFormProps) => {
       });
     }
 
-    const searchParams = new URLSearchParams({
-      what,
-      where,
-      ...data,
+    const params = {
       [contract_type]: "1",
       [working_hours]: "1",
-    }).toString();
+    };
+
+    Object.entries(rest).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        params[key] = String(value);
+      }
+    });
+
+    const searchParams = new URLSearchParams(params).toString();
     router.push(`/jobs?${searchParams}`);
   };
 
@@ -95,7 +93,6 @@ const SearchForm = ({ variant }: SearchFormProps) => {
       <form
         id="search-jobs"
         role="search"
-        action={"/jobs"}
         onSubmit={handleSubmit}
         autoComplete="off"
       >
@@ -220,47 +217,56 @@ const SearchForm = ({ variant }: SearchFormProps) => {
             </select>
           </div>
         </div>
-        <div className="my-2">
-          <div>
-            <details className="dropdown">
-              <summary>Recent Searches</summary>
-              {formData.recent_searches.map((search, index) => (
-                <option
-                  key={index}
-                  onClick={() => {
-                    const [what, where] = search.split(" in ");
+        {formData.recent_searches.length > 0 && (
+          <div className="my-2">
+            <div>
+              <details className="dropdown">
+                <summary>Recent Searches</summary>
+                {formData.recent_searches.map((search, index) => (
+                  <option
+                    key={index}
+                    onClick={() => {
+                      const [what, where] = search.split(" in ");
 
-                    const searchParams = new URLSearchParams({
-                      what,
-                      where,
-                    }).toString();
-                    setFormData({
-                      ...formData,
-                      what,
-                      where,
-                    });
-                    router.push(`/jobs?${searchParams}`);
-                  }}
-                >
-                  {search}
-                </option>
-              ))}
-            </details>
-            <button
-              type="button"
-              className="w-full m-auto mt-2 cursor-pointer"
-              onClick={() => setFormData({ ...formData, recent_searches: [] })}
-            >
-              Clear Searches
-            </button>
+                      const searchParams = new URLSearchParams({
+                        what,
+                        where,
+                      }).toString();
+                      setFormData({
+                        ...formData,
+                        what,
+                        where,
+                      });
+                      router.push(`/jobs?${searchParams}`);
+                    }}
+                  >
+                    {search}
+                  </option>
+                ))}
+              </details>
+              <button
+                type="button"
+                className="w-full m-auto mt-2 cursor-pointer"
+                onClick={() =>
+                  setFormData({ ...formData, recent_searches: [] })
+                }
+              >
+                Clear Searches
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </form>
     );
   }
 
   return (
-    <form id="search-main" role="search" action={"/jobs"} autoComplete="off">
+    <form
+      id="search-main"
+      role="search"
+      onSubmit={handleSubmit}
+      autoComplete="off"
+    >
       <div className="row">
         <div className="col">
           <label htmlFor="what">

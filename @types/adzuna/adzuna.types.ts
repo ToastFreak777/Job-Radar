@@ -2,7 +2,6 @@ export interface AdzunaAPIBASE {
   country: string;
   app_id: string;
   app_key: string;
-  page: number;
 }
 
 export interface JobSearchParams {
@@ -34,6 +33,7 @@ export interface SalaryParams {
 }
 
 export interface FilterParams {
+  page: number;
   results_per_page?: number;
   max_days_old?: number;
   category?: string;
@@ -90,7 +90,7 @@ export type AdzunaJobs = {
   __CLASS__: string;
 };
 
-export interface AdzuanaResponse {
+export interface AdzunaResponse {
   count: number;
   mean: number;
   results: [AdzunaJobs];
