@@ -108,7 +108,7 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
                 name="what"
                 value={formData.what}
                 onChange={handleChange}
-                placeholder="what title, keywords or company"
+                placeholder="title, keywords or company"
               />
               <button type="submit" hidden>
                 Submit
@@ -276,7 +276,7 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
             <input
               id="what"
               name="what"
-              placeholder="what title, keywords or company"
+              placeholder="title, keywords or company"
               value={formData.what}
               onChange={handleChange}
             />
