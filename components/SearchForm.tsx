@@ -134,10 +134,11 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
             </div>
           </div>
           <div>
-            <label>Distance</label>
+            <label htmlFor="distance">Distance</label>
             <input
               className="w-[25%] outline-2 outline-primary rounded-sm ml-4 pl-2"
               type="text"
+              id="distance"
               name="distance"
               inputMode="numeric"
               pattern="[0-9]+"
@@ -147,11 +148,16 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
           </div>
           <div className="">
             <div className="flex items-center gap-6">
-              <label className="text-sm w-full">Min</label>
-              <label className="text-sm w-full">Max</label>
+              <label htmlFor="salary_min" className="text-sm w-full">
+                Min
+              </label>
+              <label htmlFor="salary_max" className="text-sm w-full">
+                Max
+              </label>
             </div>
             <div className="flex gap-2">
               <input
+                id="salary_min"
                 className="outline-2 outline-primary rounded-sm pl-2"
                 type="text"
                 name="salary_min"
@@ -162,6 +168,7 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
               />
               {` - `}
               <input
+                id="salary_max"
                 className="outline-2 outline-primary rounded-sm pl-2"
                 type="text"
                 name="salary_max"
@@ -204,7 +211,9 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
             </select>
           </div>
           <div>
-            <label className="block">Contract Type</label>
+            <label htmlFor="contract_type" className="block">
+              Contract Type
+            </label>
             <select
               id="contract_type"
               name="contract_type"

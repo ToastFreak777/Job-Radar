@@ -12,6 +12,7 @@ export const adzuna = {
     ...query
   }: AdzunaAPIRequest): Promise<AdzuanaResponse> => {
     const url = new URL(`${country}/search/${page}`, BASE_URL);
+
     url.searchParams.append("app_id", app_id);
     url.searchParams.append("app_key", app_key);
 
