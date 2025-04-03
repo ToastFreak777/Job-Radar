@@ -25,7 +25,7 @@ describe("SearchForm Component", () => {
 
   it("Should render with pre-filled inputs when initialQuery is provided and variant is 'jobs'", () => {
     const mockInitialQuery = { what: "java developer", where: "london" };
-    render(<SearchForm variant={"jobs"} initialQuery={mockInitialQuery} />);
+    render(<SearchForm variant={"jobs"} query={mockInitialQuery} />);
 
     const whatInput = screen.getByRole("textbox", { name: /what/i });
     const whereInput = screen.getByRole("textbox", { name: /where/i });
@@ -125,7 +125,7 @@ describe("SearchForm Component", () => {
     fireEvent.change(whereInput, { target: { value: "london" } });
     fireEvent.submit(form);
 
-    expect(screen.getByText("in london")).toBeInTheDocument();
+    expect(screen.getByText("Jobs in london")).toBeInTheDocument();
   });
 
   it("Should clear recent searches when clear button is clicked", () => {
@@ -163,7 +163,7 @@ describe("SearchForm Component", () => {
       "london",
     );
     expect(mockRouterPush).toHaveBeenCalledWith(
-      "/jobs?what=developer&where=london",
+      "/jobs?permanent=1&full_time=1&what=developer&where=london&page=1&results_per_page=10&distance=5&max_days_old=7&salary_min=0&salary_max=1000000",
     );
   });
 });

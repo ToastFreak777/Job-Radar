@@ -68,6 +68,8 @@ const mockInitialQuery: AdzunaAPIQuery = {
   page: 1,
 };
 
+jest.mock("next/navigation");
+
 global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve(mockInitialData),
@@ -76,12 +78,7 @@ global.fetch = jest.fn(() =>
 
 describe("Jobs Results Component", () => {
   it("Renders job results correctly", async () => {
-    render(
-      <JobResults
-        initialData={mockInitialData}
-        initialQuery={mockInitialQuery}
-      />,
-    );
+    render(<JobResults data={mockInitialData} query={mockInitialQuery} />);
 
     await waitFor(async () => {
       expect(screen.getByText("Software Engineer")).toBeInTheDocument();
