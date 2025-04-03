@@ -9,17 +9,16 @@ type JobsProps = {
 
 const Jobs = async ({ searchParams }: JobsProps) => {
   const query = await searchParams;
-  // console.log(query);
 
-  const initialData = await loadAdzunaJobs(query);
-  // console.log(initialData);
+  const data = await loadAdzunaJobs(query);
+  // console.log(data);
 
   return (
     <div className="wrapper row gap-12">
       <div className="grow-1">
-        <SearchForm variant={"jobs"} initialQuery={query} />
+        <SearchForm variant={"jobs"} query={query} />
       </div>
-      <JobResults initialData={initialData} initialQuery={query} />
+      <JobResults data={data} query={query} />
     </div>
   );
 };

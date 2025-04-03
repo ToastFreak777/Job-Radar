@@ -9,7 +9,7 @@ import { AdzunaAPIQuery } from "@/@types/adzuna";
 
 type SearchFormProps = {
   variant: string;
-  initialQuery?: AdzunaAPIQuery;
+  query?: AdzunaAPIQuery;
 };
 
 type InitialState = {
@@ -17,7 +17,7 @@ type InitialState = {
   where: string;
   contract_type: "permanent" | "contract";
   working_hours: "full_time" | "part_time";
-  recent_searches: string[];
+  recent_searches: { [key: string]: string }[];
   page: number;
   results_per_page: number;
   distance: number;
@@ -40,12 +40,12 @@ const initialState: InitialState = {
   salary_max: 1_000_000,
 };
 
-const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
+const SearchForm = ({ variant, query }: SearchFormProps) => {
   const router = useRouter();
 
   const [formData, setFormData] = useState({
     ...initialState,
-    ...initialQuery,
+    ...query,
   });
 
   // TODO
@@ -64,15 +64,6 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { contract_type, working_hours, recent_searches, ...rest } = formData;
 
-    if (rest.what || rest.where) {
-      const searchHistory = `${rest.what || ""}${rest.where ? " in " + rest.where : ""}`;
-
-      setFormData({
-        ...formData,
-        recent_searches: [...formData.recent_searches, searchHistory],
-      });
-    }
-
     const params = {
       [contract_type]: "1",
       [working_hours]: "1",
@@ -84,8 +75,20 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
       }
     });
 
-    const searchParams = new URLSearchParams(params).toString();
-    router.push(`/jobs?${searchParams}`);
+    const searchParams = new URLSearchParams(params);
+    searchParams.set("page", "1");
+
+    if (rest.what || rest.where) {
+      const searchHistory = `${rest.what || "Jobs"}${rest.where ? " in " + rest.where : ""}`;
+      const currentSearch = { [searchHistory]: searchParams.toString() };
+
+      setFormData((prev) => ({
+        ...prev,
+        recent_searches: [...prev.recent_searches, currentSearch],
+      }));
+    }
+
+    router.push(`/jobs?${searchParams.toString()}`);
   };
 
   if (variant === "jobs") {
@@ -231,33 +234,36 @@ const SearchForm = ({ variant, initialQuery }: SearchFormProps) => {
             <div>
               <details className="dropdown">
                 <summary>Recent Searches</summary>
-                {formData.recent_searches.map((search, index) => (
-                  <option
-                    key={index}
-                    onClick={() => {
-                      const [what, where] = search.split(" in ");
+                {formData.recent_searches.map((search, index) => {
+                  const searchKey = Object.keys(search)[0];
 
-                      const searchParams = new URLSearchParams({
-                        what,
-                        where,
-                      }).toString();
-                      setFormData({
-                        ...formData,
-                        what,
-                        where,
-                      });
-                      router.push(`/jobs?${searchParams}`);
-                    }}
-                  >
-                    {search}
-                  </option>
-                ))}
+                  return (
+                    <option
+                      key={index}
+                      onClick={() => {
+                        const searchParams = search[searchKey];
+                        const { what, where } = Object.fromEntries(
+                          new URLSearchParams(searchParams),
+                        );
+                        setFormData((prev) => ({
+                          ...prev,
+                          what,
+                          where,
+                        }));
+
+                        router.push(`/jobs?${searchParams}`);
+                      }}
+                    >
+                      {searchKey}
+                    </option>
+                  );
+                })}
               </details>
               <button
                 type="button"
                 className="w-full m-auto mt-2 cursor-pointer"
                 onClick={() =>
-                  setFormData({ ...formData, recent_searches: [] })
+                  setFormData((prev) => ({ ...prev, recent_searches: [] }))
                 }
               >
                 Clear Searches

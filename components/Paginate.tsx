@@ -1,19 +1,21 @@
 "use client";
 
-import React from "react";
-
+import { useRouter, useSearchParams } from "next/navigation";
 import { Pagination, Stack } from "@mui/material";
-import { AdzunaAPIQuery } from "@/@types/adzuna";
 
 type PaginateProps = {
   totalPages: number;
   currentPage: number;
-  updateQuery: (updates: Partial<AdzunaAPIQuery>) => void;
 };
 
-const Paginate = ({ totalPages, currentPage, updateQuery }: PaginateProps) => {
-  const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    updateQuery({ page: value });
+const Paginate = ({ totalPages, currentPage }: PaginateProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handlePageChange = (e: React.ChangeEvent<unknown>, page: number) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.set("page", page.toString());
+    router.push(`?${newSearchParams.toString()}`);
   };
 
   return (
@@ -24,7 +26,7 @@ const Paginate = ({ totalPages, currentPage, updateQuery }: PaginateProps) => {
         variant="outlined"
         shape="rounded"
         page={Number(currentPage)}
-        onChange={handleChange}
+        onChange={handlePageChange}
       />
     </Stack>
   );

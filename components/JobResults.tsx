@@ -1,57 +1,27 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-
 import { AdzunaAPIQuery, AdzunaResponse } from "@/@types/adzuna";
 import Paginate from "@/components/Paginate";
 
 type JobResultsProps = {
-  initialData: AdzunaResponse;
-  initialQuery: AdzunaAPIQuery;
+  data: AdzunaResponse;
+  query: AdzunaAPIQuery;
 };
 
-const JobResults = ({ initialData, initialQuery }: JobResultsProps) => {
-  const [data, setData] = useState(initialData);
-  const [query, setQuery] = useState(initialQuery);
-
-  const results_per_page = query.results_per_page || 10;
+const JobResults = ({ data, query }: JobResultsProps) => {
   const page = query.page || 1;
-  const pages = Math.ceil(initialData?.count / results_per_page);
-
-  const updateQuery = (updates: AdzunaAPIQuery) => {
-    setQuery((prev) => ({ ...prev, ...updates }));
-  };
-
-  useEffect(() => {
-    const fetchJobs = async () => {
-      const params: Record<string, string> = {};
-
-      Object.entries(query).forEach(([key, value]) => {
-        if (value !== undefined && value !== null) {
-          params[key] = String(value);
-        }
-      });
-
-      const res = await fetch(`/api/v1/jobs?${new URLSearchParams(params)}`);
-      const newData = await res.json();
-      // console.log(newData);
-      setData(newData);
-    };
-
-    fetchJobs();
-  }, [query]);
+  const results_per_page = query.results_per_page || 10;
+  const pages = Math.ceil(data?.count / results_per_page);
 
   return (
     <div className="grow-2 max-w-[80%]">
       <div className="flex justify-between">
         <h3>
-          <span className="font-semibold">{query?.what}</span> jobs in the USA,{" "}
-          {query?.where}
+          <span className="font-semibold">{query.what}</span> jobs
+          {query.where && ", in " + query.where}
         </h3>
-        <p>{data?.count} jobs</p>
+        <p>{data.count} jobs</p>
       </div>
       <div className="h-full my-2 overflow-auto">
-        {data?.results?.map((item) => (
+        {data.results.map((item) => (
           <div className="border-y border-gray-300" key={item.id}>
             <h4 className="text-lg font-semibold">{item.title}</h4>
             <p className="text-sm text-gray-500">
@@ -89,11 +59,7 @@ const JobResults = ({ initialData, initialQuery }: JobResultsProps) => {
           </div>
         ))}
       </div>
-      <Paginate
-        totalPages={pages}
-        currentPage={page}
-        updateQuery={updateQuery}
-      />
+      <Paginate totalPages={pages} currentPage={page} />
     </div>
   );
 };
