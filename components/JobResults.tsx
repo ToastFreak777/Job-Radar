@@ -11,6 +11,14 @@ const JobResults = ({ data, query }: JobResultsProps) => {
   const results_per_page = query.results_per_page || 10;
   const pages = Math.ceil(data?.count / results_per_page);
 
+  if (data.count === 0) {
+    return (
+      <div className="grow-2 w-full">
+        <h3>Looks like no jobs...</h3>
+      </div>
+    );
+  }
+
   return (
     <div className="grow-2 max-w-[80%]">
       <div className="flex justify-between">
