@@ -92,7 +92,7 @@ Demonstrates containerization skills and ensures portability across platforms li
 
 ## 🌐 Deployment
 
-- (Live Demo)[]
+- [Live Demo](https://job-radar-ruby.vercel.app)
 - Vercel handles frontend, backend API routes, and external API requests seamlessly.
 
 ## 📂 Project Structure
