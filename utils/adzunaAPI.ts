@@ -1,4 +1,4 @@
-import { AdzuanaResponse, AdzunaAPIRequest } from "@/@types/adzuna";
+import { AdzunaResponse, AdzunaAPIRequest } from "@/@types/adzuna";
 import { fetchAPI } from "./fetchAPI";
 
 const BASE_URL = "https://api.adzuna.com/v1/api/jobs/";
@@ -10,7 +10,7 @@ export const adzuna = {
     country,
     page,
     ...query
-  }: AdzunaAPIRequest): Promise<AdzuanaResponse> => {
+  }: AdzunaAPIRequest): Promise<AdzunaResponse> => {
     const url = new URL(`${country}/search/${page}`, BASE_URL);
 
     url.searchParams.append("app_id", app_id);
