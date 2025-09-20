@@ -1,29 +1,58 @@
 # Job Radar
 
-A job aggregator for finding the right job for you.
+**Job Rader** is a job aggregator designed to help users find the right job quickly.
+It demonstrates proficiency in **external API integration**, **unit and integration testing**, and **containerization with Docker**.
 
-## Core Features
+---
 
-- [] Search
-  - [] Location
-- [] Advance Filtering
-  - [] Job type filters (full time, part time, internship, etc.)max
-- [] Containerized with Docker
+## 🚀 Core Features
 
-## Api's 
+- **Job Search**
+  - Search jobs by keywords
+  - Filter by location
+- **Advance Filtering**
+  - Filter by job type (full-time, part-time, internships, etc)
+- **Containerized with Docker**
+  - Fully dockerized for portability
+- **Fully Tested**
+  - Includes unit tests for individual components and integration tests for full workflows
 
-- [] Adzuna
-- [] Jobicy (Under development)
+---
 
-## Fully Tested
+## 🔗 Api's
 
-Includes unit tests and integrations tests.
+- **Adzuna** - Fully integrated
+- **Jobicy** - Under development
 
-## Getting Started
+## 💻 Tech Stack
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+- Next.js 15
+- TypeScript
+- React
+- Node.js
+- Jest & React Testing Library
+- Docker
 
-First, run the development server:
+## 📦 Getting Started
+
+Clone the repo
+
+```bash
+git clone https://github.com/ToastFreak777/Job-Radar.git
+cd job_radar
+```
+
+Install Dependencies
+
+```bash
+npm install
+# or
+yarn
+# or
+pnpm install
+```
+
+Run development server
 
 ```bash
 npm run dev
@@ -31,24 +60,71 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Running Tests
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm test
+# or
+yarn test
+# or
+pnpm test
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Unit tests verify individual components and utility functions.
 
-## Learn More
+Integration tests verify end-to-end functinality of job search and API integration.
 
-To learn more about Next.js, take a look at the following resources:
+Running with Docker
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Build the Docker image
+docker build -t job-radar .
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run the container
+docker run -p 3000:3000 --env-file .env job-radar
+```
+
+App will be available at `http://localhost:3000`
+
+Demonstrates containerization skills and ensures portability across platforms like Railway, AWS, or DigitalOcean.
+
+## 🌐 Deployment
+
+- (Live Demo)[]
+- Vercel handles frontend, backend API routes, and external API requests seamlessly.
+
+## 📂 Project Structure
+
+```bash
+job_radar/
+├─ app/                # Next.js App Router pages
+│  ├─ api/             # API routes
+│  ├─ jobs/            # Job pages/components
+│  ├─ layout.tsx
+│  └─ page.tsx
+├─ components/         # React components
+├─ utils/              # API helpers and fetch logic
+├─ __tests__/          # Unit & integration tests
+├─ Dockerfile
+├─ package.json
+└─ README.md
+```
+
+## 🏆 Portfolio Highlights
+
+1. External API Integration
+
+   - Fetches live job data from Adzuna, demonstrating async data handling and API consumption.
+
+2. Testing
+
+   - Unit and integration tests ensure code quality and maintainability.
+
+3. Docker & Portability
+
+   - Dockerfile included for containerized deployment, showing DevOps skill.
 
 ## Deploy on Vercel
 
